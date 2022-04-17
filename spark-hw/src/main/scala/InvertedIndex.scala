@@ -1,6 +1,3 @@
-import org.apache.hadoop.io.{LongWritable, Text}
-import org.apache.hadoop.mapred.FileSplit
-import org.apache.spark.rdd.NewHadoopRDD
 import org.apache.spark.sql.SparkSession
 
 object InvertedIndex {
@@ -10,16 +7,7 @@ object InvertedIndex {
       .appName("Inverted Index")
       .getOrCreate()
 
-    // Delete output file if exists
-//    val hadoopConf = new org.apache.hadoop.conf.Configuration()
-//    val hdfs = org.apache.hadoop.fs.FileSystem.get(new java.net.URI("hdfs://emr-header-1.cluster-285604:9000"), hadoopConf)
-//    try {
-//      hdfs.delete(new org.apache.hadoop.fs.Path(args(1)), true)
-//    } catch {
-//      case _: Throwable => {}
-//    }
-
-    val tempIndex = spark.sparkContext.wholeTextFiles(args(0))
+    spark.sparkContext.wholeTextFiles(args(0))
       .flatMap {
         case (path, text) =>
           text.toString.split("\r\n")
@@ -64,5 +52,14 @@ object InvertedIndex {
     //    }.sortByKey().map(word => s"${word._1}:${word._2}")
     //
     //    group.repartition(1).saveAsTextFile(args(1))
+
+    // Delete output file if exists
+    //    val hadoopConf = new org.apache.hadoop.conf.Configuration()
+    //    val hdfs = org.apache.hadoop.fs.FileSystem.get(new java.net.URI("hdfs://emr-header-1.cluster-285604:9000"), hadoopConf)
+    //    try {
+    //      hdfs.delete(new org.apache.hadoop.fs.Path(args(1)), true)
+    //    } catch {
+    //      case _: Throwable => {}
+    //    }
   }
 }
