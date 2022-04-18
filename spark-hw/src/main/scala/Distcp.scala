@@ -70,8 +70,8 @@ object Distcp {
     val target = args(1).toString
     val options = parseOptions(args)
 
-    var fileList: ArrayBuffer[(Path, Path)] = null
-    mkDir(spark, new Path(target), new Path(source), fileList, options)
+    var fileList: ArrayBuffer[(Path, Path)] = new ArrayBuffer[(Path, Path)]()
+    mkDir(spark, new Path(source), new Path(target), fileList, options)
     copy(spark, fileList, options)
   }
 }
