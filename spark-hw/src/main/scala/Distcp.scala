@@ -15,6 +15,7 @@ object Distcp {
     fs.listStatus(sourcePath)
       .foreach(currPath => {
         if (currPath.isDirectory) {
+          // 如果是path，1）生成当前路径 2）递归调用进入路径下一层
           val subPath = currPath.getPath.toString.split(sourcePath.toString)(1)
           val nextTargetPath = new Path(targetPath + subPath)
           try {
@@ -24,6 +25,7 @@ object Distcp {
           }
           mkDir(sparkSession, currPath.getPath, nextTargetPath, fileList, options)
         } else {
+          // 遇到文件，则记录当前文件路径 -> cp的目标路径
           fileList.append((currPath.getPath, targetPath))
         }
       })
